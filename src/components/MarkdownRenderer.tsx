@@ -15,29 +15,50 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content }) =
     let listType: 'ul' | 'ol' | null = null;
 
     const renderInlineStyles = (text: string) => {
-        // Handle bold: **text**
-        let processed = text;
-        const boldParts = processed.split(/(\*\*.*?\*\*)/g);
+        // Handle links: [text](url)
+        const linkParts = text.split(/(\[.*?\]\(.*?\))/g);
 
-        return boldParts.map((part, i) => {
-            if (part.startsWith('**') && part.endsWith('**')) {
-                return <strong key={i} className="text-white font-bold">{part.slice(2, -2)}</strong>;
+        return linkParts.flatMap((part, i) => {
+            if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
+                const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                if (match) {
+                    return (
+                        <a
+                            key={i}
+                            href={match[2]}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-4 transition-colors font-medium"
+                        >
+                            {renderInlineStyles(match[1])}
+                        </a>
+                    );
+                }
             }
 
-            // Handle inline code: `code`
-            const codeParts = part.split(/(`.*?`)/g);
-            return codeParts.map((cPart, ci) => {
-                if (cPart.startsWith('`') && cPart.endsWith('`')) {
-                    return <code key={`${i}-${ci}`} className="bg-purple-900/30 text-purple-300 px-1.5 py-0.5 rounded font-mono text-sm">{cPart.slice(1, -1)}</code>;
+            // Handle bold: **text**
+            const boldParts = part.split(/(\*\*.*?\*\*)/g);
+
+            return boldParts.flatMap((bPart, bi) => {
+                if (bPart.startsWith('**') && bPart.endsWith('**')) {
+                    return <strong key={`${i}-${bi}`} className="text-white font-bold">{bPart.slice(2, -2)}</strong>;
                 }
 
-                // Handle italic: *text*
-                const italicParts = cPart.split(/(\*.*?\*)/g);
-                return italicParts.map((iPart, ii) => {
-                    if (iPart.startsWith('*') && iPart.endsWith('*') && iPart.length > 2) {
-                        return <em key={`${i}-${ci}-${ii}`} className="text-gray-300 italic">{iPart.slice(1, -1)}</em>;
+                // Handle inline code: `code`
+                const codeParts = bPart.split(/(`.*?`)/g);
+                return codeParts.flatMap((cPart, ci) => {
+                    if (cPart.startsWith('`') && cPart.endsWith('`')) {
+                        return <code key={`${i}-${bi}-${ci}`} className="bg-purple-900/30 text-purple-300 px-1.5 py-0.5 rounded font-mono text-sm">{cPart.slice(1, -1)}</code>;
                     }
-                    return iPart;
+
+                    // Handle italic: *text*
+                    const italicParts = cPart.split(/(\*.*?\*)/g);
+                    return italicParts.map((iPart, ii) => {
+                        if (iPart.startsWith('*') && iPart.endsWith('*') && iPart.length > 2) {
+                            return <em key={`${i}-${bi}-${ci}-${ii}`} className="text-gray-300 italic">{iPart.slice(1, -1)}</em>;
+                        }
+                        return iPart;
+                    });
                 });
             });
         });

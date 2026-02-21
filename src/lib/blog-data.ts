@@ -80,7 +80,7 @@ On the channel, I've covered everything from:
 - **Dockerizing Next.js** for production environments.
 - **Building AI Chatbots** using the same agentic principles that power CodeFusion.
 
-## bridging the Gap
+## Bridging the Gap
 
 Why do I continue to teach while building a SaaS? Because a tool is only as good as the person using it. By teaching developers how to use **FastAPI, Neon DB, and Clerk**, I am preparing them to get the most out of CodeFusion AI.
 
@@ -92,11 +92,63 @@ With over 1,100 subscribers and growing, we are building a community of "smart c
 
 Check out our latest tutorials and join the mission to make high-end engineering accessible to everyone.
 
+## 📺 New Video: Personal AI Employee Part 4
+
+Facebook & LinkedIn post automation prompt given below:
+
+# 🤖 AI Social Media Automation: Master Implementation Prompt
+
+Give the following prompt to an AI assistant (like Claude or GPT) to replicate this exact system.
+
 ---
-### Watch & Learn
-- [Visit CodeVerse Soban on YouTube](http://www.youtube.com/@CodeVerseSoban)
-- [Check out our Video Tutorials](/tutorials)
+
+## 📝 The Prompt
+
+"I want to build a **Semi-Autonomous AI Social Media Manager** that uses a 'Human-in-the-Loop' (HITL) architecture. The system should be built using Python and Playwright. Here is the core specifications:
+
+### 1. Unified Folder Architecture
+Create a folder structure to manage task flow:
+- \`/Pending_Approval\`: AI saves drafted posts here (Markdown with YAML meta).
+- \`/Approved\`: Human moves files here to give permission to post.
+- \`/Done\`: AI moves files here after successful posting.
+- \`/session\`: Stores browser session data for persistent logins (Login once, save forever).
+- \`/Logs\`: For error screenshots and event logging.
+
+### 2. The Muscle (Social Media Executor)
+Implement \`social_media_executor_v2.py\`:
+- Use **Playwright** with \`launch_persistent_context\` directed at the \`/session\` folder.
+- **LinkedIn Logic**: Handle 'Start a post' button detection and editor filling.
+- **Facebook Logic**: Handle multi-step posting (Next -> Post/Share). Use \`keyboard.type\` for reliability.
+- **Robustness**: Take screenshots to \`/Logs\` on any failure.
+
+### 3. The Brain (Master Orchestrator)
+Implement \`master_orchestrator.py\`:
+- Continuously monitor \`/Approved\` folder.
+- When it sees a \`POST_...\` file, it triggers the Executor.
+- If successful, move to \`/Done\`. If fail, retry up to 3 times then cooldown.
+
+### 4. Trigger Scripts (Draft Generation)
+Implement \`trigger_posts.py\` scripts that:
+- Generate a Markdown post with metadata (\`platform\`, \`content\`).
+- Save it directly into \`/Pending_Approval\`.
+
+### 5. Full Workflow (The 24/7 Loop)
+1. **Login Session**: Run the script once manually to log in to LinkedIn/FB. The session is saved in \`/session\`.
+2. **Perception/Generation**: Run a trigger script to generate a draft in \`/Pending_Approval\`.
+3. **HITL Approval**: Manually review and move the file to \`/Approved\`.
+4. **Execution**: The Master Orchestrator detects the file and performs the actual browser automation to post it."
+
 ---
+
+## 🚀 How to use this
+1. Copy the text above and give it to your AI assistant.
+2. Ask it to "Generate the Python code for this entire system."
+3. It will create the watchers, triggers, and executors we built!"
+
+🎥 **Watch & Learn**
+
+- [Visit CodeVerse Soban on YouTube](https://www.youtube.com/@CodeVerseSoban)
+- [Check out our Video Tutorials](https://codefusion.site/tutorials)
 `,
     },
     {
